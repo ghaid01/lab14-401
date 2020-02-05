@@ -1,0 +1,30 @@
+{
+  "name": "lab14-401",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghaid01/lab14-401.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "lint": "eslint **/*.js",
+  "bugs": {
+    "url": "https://github.com/ghaid01/lab14-401/issues"
+  },
+  "homepage": "https://github.com/ghaid01/lab14-401#readme",
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "bcrypt": "^3.0.7",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongo": "^0.1.0"
+  }
+}
