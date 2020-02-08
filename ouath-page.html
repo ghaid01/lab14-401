@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <tittle>
+            home page
+        </tittle>
+    </head>
+    <body>
+        <h1>lab 12 ouath </h1>
+        <a id="ouath" href="#"> Login to the app</a>
+
+    </body>
+    <script>
+        let URL = 'https://github.com/login/oauth/authorize';
+        let options = {
+            client_id: '86c19792bb367f7a2b14',
+            redirect_uri: 'https://localhost:3000/oauth',
+            scope: 'read:user', //limit the response 
+            state: 'lab14'
+
+
+        }
+        let queryString = Object.keys(options).map((key) =>{
+            return `${key}=`+ encodeURIComponent(options[key])
+        }).join('&');
+        console.log(queryString);
+
+        let authURL =`${URL}?${queryString}`;
+        console.log('both urls', authURL);
+
+        let link = document.getElementById('oauth');
+        link.setAttribute('href', authURL);
+
+
+    </script>
+</html>
