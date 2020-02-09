@@ -13,7 +13,7 @@
     <script>
         let URL = 'https://github.com/login/oauth/authorize';
         let options = {
-            client_id: '86c19792bb367f7a2b14',
+            client_id: process.env.CLIENT_ID,
             redirect_uri: 'https://localhost:3000/oauth',
             scope: 'read:user', //limit the response 
             state: 'lab14'

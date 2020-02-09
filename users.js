@@ -6,20 +6,27 @@ const jwt = require('jsonwebtoken');
 const MONGODB_URI='mongodb://localhost:27017/lab14';
 
 let SECRET = 'two-factor authentication';
-
+let roles = {
+  user:['read'],
+  editor:['read', 'create','update'],
+  admin:['read','create','update','delete'],
+};
 mongoose.connect(MONGODB_URI);
+//({'userName': 'ghaid','pass': 'ghaidspassword'})
+// ({'userName': 'ghaid','pass': 'ghaidspassword'});
+const Users = mongoose.Schema({
+  userName: {type:String},
+  pass: {type:String},
+});
 
-
-const Users = mongoose.Schema({'userName': 'ghaid','pass': 'ghaidspassword'});
-
-async function hash(record){
-  let newRecord = new Users(record);
+Users.pre('save', async function(record){
+  let newRecord = new Users( {});
   newRecord.pass= await bcrypt.hash(record.pass,5);
   mongoose[record.userName]= record;
   console.log('//////',newRecord.pass);
   return record;
 
-}
+});
 // if (!mongoose[record.userName]){
 //     record.pass= await bcrypt.hash(record.pass,5)
 
@@ -31,7 +38,8 @@ async function hash(record){
 // }
 
 
-Users.pre('save', hash());
+
+
 
 Users.authentication= async function(username, password){
   let comparedPass = await bcrypt.compare(password, mongoose[username].pass);
@@ -40,9 +48,14 @@ Users.authentication= async function(username, password){
 };
 
 Users.twoFactorAuthentication = async function(username){
-  let uniqueToken = jwt.sign({username: username.userName}, SECRET);
+  let info={
+    username: username.userName,
+    userCap: roles[username.roles],
+  };
+
+  let uniqueToken = jwt.sign(info, SECRET);
   return uniqueToken;
 };
 Users.list = ()=> mongoose;
 
-module.exports = Users;
+module.exports = new Users;

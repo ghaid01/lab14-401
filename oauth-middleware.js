@@ -7,16 +7,29 @@ const tokenServer = 'https://github.com/login/ouath/access_token';
 const remoteApi = 'https://api.github.com/user';
 const API_SERVER = 'https://localhost:3000/oauth';
 
-module.exports = async function authorize(rq,res,next){
-try{
+module.exports = async function authorize(req,res,next){
+  try{
     let code = req.query.code;
 
-    let remoteToken = exchangeCodeForToken(code);
+    let remoteToken = exchangeCode(code);
     console.log(code);
     console.log(remoteToken);
 
-    let remoteUser
-}
+    let remoteUser = await getUserInfo(remoteToken);
+    console.log(remoteUser);
+
+    let [user,token] = await getUser(remoteUser);
+    req.user = user;
+    req.token = token;
+
+    console.log(user);
+
+    next();
+
+    
+  }catch(err){
+    next(err);
+  }
 };
 
 async function exchangeCode(code){
